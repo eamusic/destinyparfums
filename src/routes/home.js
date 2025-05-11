@@ -26,4 +26,14 @@ router.get('/shop', (req, res) => {
     res.render('pages/shop', { title });
 });
 
+router.get('/about', (req, res) =>{
+    const title = 'Destiny Perfumeria - Quienes Somos';
+    res.render('pages/about', { title });
+});
+
+router.get('/contact', (req, res) => {
+    const title = 'Destiny Perfumeria - Contacto';
+    res.render('pages/contact', { title });
+});
+
 module.exports = router;
