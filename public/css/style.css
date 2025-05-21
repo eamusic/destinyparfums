@@ -1803,6 +1803,9 @@ h1.banner-title {
 
 /* 7.5 Categories Section
 --------------------------------------------------------------*/
+.categories {
+  background: url(/public/images/fondoSpecialBN.png) no-repeat;
+}
 .small-box .content-box figure{
     width: 100%;
     height: 200px;
@@ -1881,7 +1884,7 @@ h1.banner-title {
 /* 7.9 Special Offer Section
 --------------------------------------------------------------*/
 .special-offer{
-    background: url(images/specialbg.jpg) no-repeat;
+    background: url(/public/images/fondoSpecial.png) no-repeat;
 }
 
 /* 7.10 Latest Blogs Section

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "body-parser": "^2.2.0",
     "bootstrap-icons": "^1.12.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
@@ -14,7 +15,8 @@
   "description": "Destiny Perfumería",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
