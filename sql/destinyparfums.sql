@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2025 a las 21:55:23
+-- Tiempo de generación: 24-05-2025 a las 03:44:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -30,10 +30,24 @@ SET time_zone = "+00:00";
 CREATE TABLE `imgs_productos` (
   `id` int(11) NOT NULL,
   `producto_id` int(11) NOT NULL,
-  `url` varchar(255) NOT NULL,
+  `img_url` varchar(255) NOT NULL,
   `alt_text` varchar(150) DEFAULT NULL,
   `orden` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `imgs_productos`
+--
+
+INSERT INTO `imgs_productos` (`id`, `producto_id`, `img_url`, `alt_text`, `orden`) VALUES
+(1, 1, 'Ahli-Lyra-1.jpeg', 'Ahli-Lyra', 0),
+(2, 2, 'afnan-9-am-1.jpeg', 'afnan-9-am', 0),
+(3, 2, 'afnan-9-am-2.jpeg', 'afnan-9-am', 0),
+(4, 1, 'Ahli-Lyra-2.jpeg', 'Ahli-Lyra', 0),
+(5, 4, 'afnan-9-pm-femme-1.jpeg', 'afnan-9-pm-femme-1', 0),
+(6, 4, 'afnan-9-pm-femme-2.jpeg', 'afnan-9-pm-femme-2', 0),
+(7, 3, 'afnan-9-pm-hombre-1.jpeg', 'afnan-9-pm-hombre', 0),
+(8, 3, 'afnan-9-pm-hombre-2.jpeg', 'afnan-9-pm-hombre', 0);
 
 -- --------------------------------------------------------
 
@@ -92,6 +106,16 @@ CREATE TABLE `productos` (
   `descripcion` text DEFAULT NULL,
   `stock` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id`, `nombre`, `marca`, `precio`, `descripcion`, `stock`) VALUES
+(1, 'Ahli Lyra', 'AHLI', 35000.00, 'Descubre la encantadora fragancia de Ahli Lyra, una exquisita combinación floral y cítrica que te hará destacar en cualquier ocasión.', 10),
+(2, '9 AM Pour Femme', 'AFNAN', 250000.00, 'Afnan 9 AM Pour Femme es una fragancia que captura la frescura de la mañana. Con notas energizantes de cítricos y grosella negra, se adentra en un corazón floral suave y culmina con una base cálida de almizcle y vainilla, creando una experiencia olfativa única y duradera para la mujer moderna.\r\n\r\nNotas de salida: Mandarina, toronja (pomelo) y bergamota.\r\n\r\nNotas de corazón: Frambuesa y grosellas negras.\r\n\r\nNotas de base: Almizcle, ámbar y naranja.', 10),
+(3, 'Afnan 9 PM Hombre', 'AFNAN', 30000.00, 'Afnan 9 PM es una fragancia diseñada para la noche, combinando misterio y sofisticación. Su apertura vibrante de notas frescas y especiadas evoluciona hacia un corazón floral y amaderado, que aporta lujo y profundidad. Con una base cálida de ámbar y cuero, ofrece sensualidad duradera, perfecta para dejar una impresión inolvidable en cualquier ocasión especial.\r\n\r\nNotas de salida: Manzana, canela, lavanda silvestre y bergamota.\r\n\r\nNotas de corazón: Flor de azahar del naranjo y lirio de los valles (muguete).\r\n\r\nNotas de base: Vainilla, haba tonka, ámbar y pachulí.', 0),
+(4, 'Afnan 9 PM Pour Femme', 'AFNAN', 30000.00, 'Afnan 9 PM Pour Femme es una fragancia dulce y sensual que combina notas florales de jazmín, rosa y ylang-ylang con un fondo cálido de vainilla, sándalo y almizcle. Perfecta para cualquier ocasión, su delicadeza y elegancia la convierten en una experiencia única y memorable que destaca la feminidad en todo momento.\r\n\r\nNotas de salida: frambuesa, manzana, violeta y naranja\r\n\r\nNotas de corazón: rosa, iris, peonía y jazmín\r\n\r\nNotas de base: ciprés, pino, cedro y ámbar', 10);
 
 -- --------------------------------------------------------
 
@@ -178,7 +202,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `imgs_productos`
 --
 ALTER TABLE `imgs_productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
@@ -202,7 +226,7 @@ ALTER TABLE `pedido_productos`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `resenas`
