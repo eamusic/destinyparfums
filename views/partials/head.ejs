@@ -26,12 +26,12 @@
         width: auto; /* Ajusta el ancho según tus necesidades */
         height: fit-content; /* Ajusta la altura según tus necesidades */
         overflow: hidden; /* Oculta el contenido que se desborda */
-        /* position: relative;  Necesario para posicionar el contenido absoluto */
+        position: relative; /* Necesario para posicionar el contenido absoluto */
       }
 
       .contenido {
         position: absolute;
-        top: 60%;
+        top: 0;
         left: 0;
         width: 100%;
         /* height: 100%; */
@@ -42,7 +42,7 @@
       }
 
       .contenedor:hover .contenido {
-        top: 55%; /* Desplaza el contenido hacia abajo (altura del contenedor) */
+        top: 50px; /* Desplaza el contenido hacia abajo (altura del contenedor) */
         opacity: 1; /* Muestra el contenido al hacer hover */
       }
     </style>

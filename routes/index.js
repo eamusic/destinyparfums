@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const indexController = require('../controllers/index');
 
-router.get('/', (req, res) => {
-    const title = 'Destiny Perfumería';
-    res.render('pages/index', { title });
-});
+router.get('/', indexController.index );
 
 router.get('/shop', (req, res) => {
     const title = 'Destiny Perfumería - Shop';

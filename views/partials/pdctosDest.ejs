@@ -5,79 +5,44 @@
                 <h2 class="section-title">Fragancias Destacadas</h2>
             </div>
         </div>
+        
         <div class="row product-content large-box">
-            <div class="col-md-3">
-                <div class="content-box text-center" data-aos="fade" data-aos-delay="1000">
-                    <div class="card border-0" style="width: 18rem;">
-                        <div class="contenedor">
-                            <img src="/public/images/productos/descarga (10).jpeg" class="card-img position-relative" alt="...">
-                            <div class="contenido">
-                                <div class="card-img-overlay">
-                                    <div
-                                        class="card-title d-flex flex-direction-row justify-content-center align-items-center">
-                                        <button type="button" class="btn btn-outline-dark btn-small border-0">Añadir al
-                                            Carrito</button>
-                                        <button type="button" class="btn btn-outline-dark btn-small border-0"
-                                            title="Añadir a la lista de deseos"><i class="icon icon-heart"></i></button>
-                                        <button type="button" class="btn btn-outline-dark btn-small border-0"
-                                            title="Vista Previa" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                            data-bs-whatever="9 AM POUR FEMME"><i class="bi bi-eye"></i></button>
+            <% 
+                    const shuffled = productos.sort(() => 0.5 - Math.random());
+                    const selected = shuffled.slice(0, 4);
+                    selected.forEach(producto => { 
+                %>
+            <div class="col-md-3 col-sm-6">
+                    <div class="content-box text-center" data-aos="fade" data-aos-delay="1000">
+                        <div class="card border-0" style="width: 18rem;">
+                            <div class="contenedor">
+                                <img src="/public/images/productos/<%= producto.img_url %>" alt="<%= producto.nombre %>" class="img-thumbnail border-0" style="max-width: 255px;">
+                                <div class="contenido">
+                                    <div class="card-img-overlay">
+                                        <div
+                                            class="card-title d-flex flex-direction-row justify-content-center align-items-center">
+                                            <button type="button" class="btn btn-outline-dark btn-small border-0">Añadir al
+                                                Carrito</button>
+                                            <button type="button" class="btn btn-outline-dark btn-small border-0"
+                                                title="Añadir a la lista de deseos"><i class="icon icon-heart"></i></button>
+                                            <button type="button" id="<%= producto.id %>" class="btn btn-outline-dark btn-small border-0"
+                                                title="Vista Previa"><i class="bi bi-eye"></i></button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div> <!-- .contenedor -->
-                        <div class="card-body">
-                            <div class="category align-center card-text">
-                                <a href="jewellery.html">9 AM POUR FEMME</a>
-                            </div>
-                            <span class="price-tag text-center">$250.000</span>
+                                <div class="product-detail mt-3">
+                                    <h3 class="product-title"><%= producto.nombre %></h3>
+                                    <span class="price">$<%= producto.precio %></span>
+                                </div>
+                            </div> <!-- .contenedor -->
                         </div>
                     </div>
-                    <!-- <figure class="bg-grey">
-                <img src="/public/images/productos/Afnan-9-am-2-600x600.jpeg" width="125" height="auto" alt="Afnan-9">
-              </figure> 
-              <div class="category align-center">
-                <a href="jewellery.html">Pearl Diamond Earrings</a>
-              </div>
-              <span class="price-tag text-center">$34.00</span>-->
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="content-box text-center" data-aos="fade" data-aos-delay="100">
-                    <figure class="bg-grey">
-                        <img src="/public/images/gold-silver-necklace.png" alt="earring">
-                    </figure>
-                    <div class="category align-center">
-                        <a href="jewellery.html">The Necklace Gold Silver</a>
-                    </div>
-                    <span class="price-tag text-center">$78.00</span>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="content-box text-center" data-aos="fade" data-aos-delay="200">
-                    <figure class="bg-grey">
-                        <img src="/public/images/wedding-ring.png" alt="earring">
-                    </figure>
-                    <div class="category align-center">
-                        <a href="jewellery.html">Diamond Cold Wedding Ring</a>
-                    </div>
-                    <span class="price-tag text-center">$54.00</span>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="content-box text-center" data-aos="fade" data-aos-delay="300">
-                    <figure class="bg-grey">
-                        <img src="/public/images/gemstone-necklace.png" alt="earring">
-                    </figure>
-                    <div class="category align-center">
-                        <a href="jewellery.html">The Blue Gemstone Necklace</a>
-                    </div>
-                    <span class="price-tag text-center">$66.00</span>
-                </div>
-            </div>
+
+            <% }); %>
         </div>
         <div class="btn-center">
-            <a href="#" class="btn btn-medium btn-primary">Shop Now</a>
+            <a href="#" class="btn btn-medium btn-primary">Comprar Ahora</a>
         </div>
     </div>
 </section>
