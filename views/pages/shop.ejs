@@ -7,7 +7,7 @@
     <header id="header">
         <%- include('../partials/header') %>
     </header>
-    
+    <%# include('../partials/sideBarFilters') %>
     <main>
         <section class="shop-page padding-large">
       <div class="container">
@@ -27,7 +27,37 @@
     <section class="shoppify-items padding-large no-padding-top">
       <div class="container">
         <div class="row product-content large-box">
-          <div class="col-md-3">
+          <% 
+            // Crear un mapa para asegurar una sola imagen por producto id
+            const productosUnicos = {};
+            if (productos && productos.length) {
+              productos.forEach(function(producto) {
+                if (!productosUnicos[producto.id]) {
+                  productosUnicos[producto.id] = producto;
+                }
+              });
+              Object.values(productosUnicos).forEach(function(producto) { 
+          %>
+            <div class="col-md-3">
+              <div class="content-box text-center">
+                <figure class="bg-light">
+                  <img src="/public/images/productos/<%= producto.img_url %>" class="img-thumbnail border-0" alt="<%= producto.alt_text %>">
+                  <figcaption class="figure-caption text-center">
+                    <span class="fw-bold">
+                      <a href="/producto/<%= producto.id %>"><%= producto.nombre %></a>
+                    </span><br>
+                    <span class="price-tag text-center">$<%= producto.precio %></span>
+
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+          <% 
+              });
+            }
+          %>
+          
+          <!-- <div class="col-md-3">
             <div class="content-box text-center">
               <figure class="bg-grey">
                 <img src="public/images/pearl-diamond-earrings.png" alt="earring">
@@ -114,7 +144,7 @@
               </div>
               <span class="price-tag text-center">$66.00</span>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="row">
           <nav aria-label="Page navigation">

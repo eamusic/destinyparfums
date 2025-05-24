@@ -1,0 +1,75 @@
+<aside class="sidebar-filters">
+    <form method="GET" action="/productos">
+        <!-- Filtro de búsqueda -->
+        <div class="filter-section">
+            <label for="search">Buscar:</label>
+            <input type="text" id="search" name="q" placeholder="Buscar productos...">
+        </div>
+
+        <!-- Filtro por categorías -->
+        <div class="filter-section">
+            <h4>Categorías</h4>
+            <ul>
+                <% categorias.forEach(function(categoria) { %>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categorias" value="<%= categoria.id %>">
+                            <%= categoria.nombre %>
+                        </label>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+
+        <!-- Filtro por marcas -->
+        <div class="filter-section">
+            <h4>Marcas</h4>
+            <ul>
+                <% marcas.forEach(function(marca) { %>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="marcas" value="<%= marca.id %>">
+                            <%= marca.nombre %>
+                        </label>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+
+        <!-- Filtro por rango de precios -->
+        <div class="filter-section">
+            <h4>Precio</h4>
+            <label for="precio-min">Mín:</label>
+            <input type="number" id="precio-min" name="precioMin" min="0" step="1" placeholder="0">
+            <label for="precio-max">Máx:</label>
+            <input type="number" id="precio-max" name="precioMax" min="0" step="1" placeholder="1000">
+        </div>
+
+        <button type="submit">Filtrar</button>
+    </form>
+</aside>
+
+<style>
+.sidebar-filters {
+    width: 250px;
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+.filter-section {
+    margin-bottom: 20px;
+}
+.filter-section h4 {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+.filter-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.filter-section li {
+    margin-bottom: 5px;
+}
+</style>
