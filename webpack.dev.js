@@ -1,46 +1,33 @@
- const path = require('path');
- const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
- module.exports = {
-   entry: {
-     main: './src/index.js',
-   },
-   output: {
-     filename: '[name].js',
-     publicPath: '/',
-     path: path.resolve(__dirname, 'dev-build'),
-     clean: true,
-   },
-   mode: 'development',
-  //  target: 'node',
+module.exports = {
+    mode: 'development',
+    entry: 'app.js', // Cambia la ruta si tu archivo de entrada es diferente
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
+    },
+    devtool: 'inline-source-map',
+    devServer: {
+        static: './dist',
+        open: true,
+        hot: true,
+        port: 3000,
+    },
     module: {
-      rules: [
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env'],
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                },
             },
-          },
-        },
-        {
-          test: /\.ejs$/i,
-          use: ['html-loader', 'template-ejs-loader'],
-         },
-      ],
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+        ],
     },
-    resolve: {
-      extensions: ['.js', '.ejs'],
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: './src/views/index.ejs',
-        templateParameters: {
-          basePath: './src/views/public',
-        },
-        filename: 'index.html',
-      }),
-    ],
- };
+};

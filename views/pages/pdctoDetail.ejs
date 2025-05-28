@@ -1,108 +1,213 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
- <%- include ('../partials/head') %>
-</head>
-<body>
-    <header>
-        <%- include ('../partials/header') %>
-    </header>
-    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <head>
+    <%- include ('../partials/head') %>
+    <style>
+    .carousel-indicators.boton-img {
+        position: static;
+        margin-bottom: 1rem;
+        justify-content: center;
+        display: flex;
+        gap: 0.5rem;
+    }
+    .carousel-indicators.boton-img button {
+        width: 60px;
+        height: 60px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        opacity: 1;
+        transition: box-shadow 0.2s, border 0.2s;
+        box-shadow: none;
+        margin: 0;
+    }
+    .carousel-indicators.boton-img button.active,
+    .carousel-indicators.boton-img button:focus {
+        border: 2px solid #0d6efd;
+        box-shadow: 0 0 0 2px #0d6efd33;
+    }
+    .carousel-indicators.boton-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        pointer-events: none;
+        display: block;
+    }
+    </style>
+  </head>
+  <body>
+    <header><%- include ('../partials/header') %></header>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
       <defs>
-        <symbol xmlns="http://www.w3.org/2000/svg" id="heart" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z"/>
+        <symbol
+          xmlns="http://www.w3.org/2000/svg"
+          id="heart"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z"
+          />
         </symbol>
-        <symbol xmlns="http://www.w3.org/2000/svg" id="plus" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2Z"/>
+        <symbol
+          xmlns="http://www.w3.org/2000/svg"
+          id="plus"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2Z"
+          />
         </symbol>
-        <symbol xmlns="http://www.w3.org/2000/svg" id="minus" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M19 11H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2Z"/>
+        <symbol
+          xmlns="http://www.w3.org/2000/svg"
+          id="minus"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M19 11H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2Z"
+          />
         </symbol>
-        <symbol xmlns="http://www.w3.org/2000/svg" id="star-outline" viewBox="0 0 15 15">
-          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M7.5 9.804L5.337 11l.413-2.533L4 6.674l2.418-.37L7.5 4l1.082 2.304l2.418.37l-1.75 1.793L9.663 11L7.5 9.804Z"/>
+        <symbol
+          xmlns="http://www.w3.org/2000/svg"
+          id="star-outline"
+          viewBox="0 0 15 15"
+        >
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7.5 9.804L5.337 11l.413-2.533L4 6.674l2.418-.37L7.5 4l1.082 2.304l2.418.37l-1.75 1.793L9.663 11L7.5 9.804Z"
+          />
         </symbol>
-        <symbol xmlns="http://www.w3.org/2000/svg" id="star-solid" viewBox="0 0 15 15">
-          <path fill="currentColor" d="M7.953 3.788a.5.5 0 0 0-.906 0L6.08 5.85l-2.154.33a.5.5 0 0 0-.283.843l1.574 1.613l-.373 2.284a.5.5 0 0 0 .736.518l1.92-1.063l1.921 1.063a.5.5 0 0 0 .736-.519l-.373-2.283l1.574-1.613a.5.5 0 0 0-.283-.844L8.921 5.85l-.968-2.062Z"/>
+        <symbol
+          xmlns="http://www.w3.org/2000/svg"
+          id="star-solid"
+          viewBox="0 0 15 15"
+        >
+          <path
+            fill="currentColor"
+            d="M7.953 3.788a.5.5 0 0 0-.906 0L6.08 5.85l-2.154.33a.5.5 0 0 0-.283.843l1.574 1.613l-.373 2.284a.5.5 0 0 0 .736.518l1.92-1.063l1.921 1.063a.5.5 0 0 0 .736-.519l-.373-2.283l1.574-1.613a.5.5 0 0 0-.283-.844L8.921 5.85l-.968-2.062Z"
+          />
         </symbol>
       </defs>
     </svg>
     <main>
-        <section class="single-product mt-0 mt-md-5 pt-md-5">
-            <div class="container">
-                <%- include ('../partials/breadcrumb') %>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div id="productImagesCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src="/public/images/productos/descarga (10).jpeg" class="d-block w-100" alt="Producto 1">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="/public/images/productos/descarga (7).jpeg" class="d-block w-100" alt="Producto 2">
-                                </div>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#productImagesCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Anterior</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#productImagesCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Siguiente</span>
-                            </button>
+      <section class="single-product mt-0 mt-md-5 pt-md-5">
+        <div class="container">
+          <%- include ('../partials/breadcrumb') %>
+            
+          <div class="row">
+            <div class="col-md-6">
+            <div id="productImagesCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% imagenes.forEach(function(img, idx) { %>
+                        <div class="carousel-item <%= idx === 0 ? 'active' : '' %>" data-bs-interval="10000">
+                            <img src="/public/images/productos/<%= img %>" class="d-block w-100 rounded" alt="Imagen <%= idx + 1 %>">
                         </div>
-                        <!-- <figure class="bg-grey">
-                            <img src="/public/images/productos/descarga (10).jpeg" alt="Afnan-9" class="img-fluid">
-                        </figure> -->
+                        <% }); %>
                     </div>
-                    <div class="col-md-6">
-                        <div class="element-header">
-                            <h2 itemprop="name" class="display-6">9 AM POUR FEMME</h2>
-                        </div>
-                        <div class="product-price pt-3 pb-3">
-                            <strong class="text-primary display-6 fw-bold">$260.000</strong><del class="ms-2">$294.000</del>
-                        </div>
-                        <div class="product-description">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus.</p>
-                        </div>
-                        <div class="product-quantity pt-3">
-                            <div class="stock-number text-dark"><em>Disponibles: 2</em></div>
-                            <div class="stock-button-wrap">
-        
-                                <div class="input-group product-qty" style="max-width: 150px;">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="quantity-left-minus btn btn-light btn-number btn-rounded"
-                                            data-type="minus" data-field="">
-                                            <svg width="16" height="16">
-                                                <use xlink:href="#minus"></use>
-                                            </svg>
-                                        </button>
-                                    </span>
-                                    <input type="text" id="quantity" name="quantity"
-                                        class="form-control quantity input-number text-center" value="1" min="1" max="100"
-                                        placeholder="cant.">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="quantity-right-plus btn btn-light btn-number btn-rounded"
-                                            data-type="plus" data-field="">
-                                            <svg width="16" height="16">
-                                                <use xlink:href="#plus"></use>
-                                            </svg>
-                                        </button>
-                                    </span>
-                                </div>
-                                <div class="qty-button d-flex flex-wrap">
-                                    <button type="submit"
-                                        class="btn btn-primary btn-small py-3 px-4 text-uppercase me-3">Comprar</button>
-                                    <button type="button" name="add-to-cart" value="1269"
-                                        class="btn btn-dark btn-small py-3 px-4 text-uppercase">Añadir al Carrito</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-wishlist d-flex flex-wrap align-items-center">
-                            <button type="button" class="btn btn-outline-dark btn-small border-0"
-                                title="Añadir a la lista de deseos"><i class="icon icon-heart"></i></button>
-                            <span class="wishlist-label">Añadir a la lista de deseos</span>
-                        </div>
-                        <!-- <div class="meta-item d-flex align-items-baseline">
+                    <div class="carousel-indicators boton-img">
+                        <% imagenes.forEach(function(img, idx) { %>
+                            <button type="button" data-bs-target="#productImagesCarousel" data-bs-slide-to="<%= idx %>" class="<%= idx === 0 ? 'active' : '' %>" aria-current="<%= idx === 0 ? 'true' : 'false' %>" aria-label="Slide <%= idx + 1 %>">
+                                <img src="/public/images/productos/<%= img %>" class="img-fluid rounded" style="width: 60px; height: 60px; object-fit: cover;" alt="Miniatura <%= idx + 1 %>">
+                            </button>
+                        <% }); %>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productImagesCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productImagesCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+              
+            </div>
+            <div class="col-md-6">
+              <div class="element-header">
+                <h2 itemprop="name" class="display-6"><%= producto.nombre %></h2>
+              </div>
+              <div class="product-price pt-3 pb-3" id="productPrice"></div>
+              <div class="product-description">
+                <p>
+                  <%= producto.descripcion %>
+                </p>
+              </div>
+              <div class="product-quantity pt-3">
+                <div class="stock-number text-dark">
+                  <em>Disponibles: 2</em>
+                </div>
+                <div class="stock-button-wrap">
+                  <div class="input-group product-qty" style="max-width: 150px">
+                    <span class="input-group-btn">
+                      <button
+                        type="button"
+                        class="quantity-left-minus btn btn-light btn-number btn-rounded"
+                        data-type="minus"
+                        data-field=""
+                      >
+                        <svg width="16" height="16">
+                          <use xlink:href="#minus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                    <input
+                      type="text"
+                      id="quantity"
+                      name="quantity"
+                      class="form-control quantity input-number text-center"
+                      value="1"
+                      min="1"
+                      max="100"
+                      placeholder="cant."
+                    />
+                    <span class="input-group-btn">
+                      <button
+                        type="button"
+                        class="quantity-right-plus btn btn-light btn-number btn-rounded"
+                        data-type="plus"
+                        data-field=""
+                      >
+                        <svg width="16" height="16">
+                          <use xlink:href="#plus"></use>
+                        </svg>
+                      </button>
+                    </span>
+                  </div>
+                  <div class="qty-button d-flex flex-wrap">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-small py-3 px-4 text-uppercase me-3"
+                    >
+                      Comprar
+                    </button>
+                    <button
+                      type="button"
+                      name="add-to-cart"
+                      value="1269"
+                      class="btn btn-dark btn-small py-3 px-4 text-uppercase"
+                    >
+                      Añadir al Carrito
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="product-wishlist d-flex flex-wrap align-items-center">
+                <button
+                  type="button"
+                  class="btn btn-outline-dark btn-small border-0"
+                  title="Añadir a la lista de deseos"
+                >
+                  <i class="icon icon-heart"></i>
+                </button>
+                <span class="wishlist-label">Añadir a la lista de deseos</span>
+              </div>
+              <!-- <div class="meta-item d-flex align-items-baseline">
                             <h6 class="item-title no-margin pe-2">Categoría:</h6>
                             <ul class="select-list list-unstyled d-flex">
                                 <li data-value="S" class="select-item">
@@ -116,142 +221,31 @@
                                 </li>
                             </ul>
                         </div> -->
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="bootstrap-tabs">
-                            <nav>
-                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Descripción</button>
-                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" tabindex="-1">Envíos</button>
-                                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" tabindex="-1">Cómo puedes pagar</button>
-                                </div>
-                            </nav>
-                            <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="accordion" id="accordionExample2">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#accordion-collapse1" aria-expanded="true" aria-controls="accordion-collapse1">
-                                        Preguntas Frecuentes </button>
-                                </h2>
-                                <div id="accordion-collapse1" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                                    data-bs-parent="#accordionExample2">
-                                    <div class="accordion-body"> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                        cillum dolore eu fugiat nulla pariatur. </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingTwo">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#accordion-collapse2" aria-expanded="false" aria-controls="accordion-collapse2">
-                                        Términos y Condiciones </button>
-                                </h2>
-                                <div id="accordion-collapse2" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                    data-bs-parent="#accordionExample2">
-                                    <div class="accordion-body"> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                        cillum dolore eu fugiat nulla pariatur. </div>
-                                </div>
-                            </div>
-                            <!-- <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingThree">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#accordion-collapse3" aria-expanded="false" aria-controls="accordion-collapse3">
-                                        Accordion Item #3 </button>
-                                </h2>
-                                <div id="accordion-collapse3" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                                    data-bs-parent="#accordionExample2">
-                                    <div class="accordion-body"> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                        cillum dolore eu fugiat nulla pariatur. </div>
-                                </div>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
             </div>
-        </section>
-        <section class="related-products py-5">
-            <div class="container">
-                <h3 class="mb-4">Productos Relacionados</h3>
-                <div id="relatedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="row g-3">
-                                <div class="col-6 col-md-3">
-                                    <div class="card h-100">
-                                        <img src="/public/images/productos/descarga (1).jpeg" class="card-img-top" alt="Producto Relacionado 1">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title mb-2">Perfume A</h5>
-                                            <p class="card-text text-primary fw-bold mb-1">$120.000</p>
-                                            <a href="#" class="btn btn-outline-primary btn-sm">Ver detalle</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="card h-100">
-                                        <img src="/public/images/productos/descarga (2).jpeg" class="card-img-top" alt="Producto Relacionado 2">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title mb-2">Perfume B</h5>
-                                            <p class="card-text text-primary fw-bold mb-1">$135.000</p>
-                                            <a href="#" class="btn btn-outline-primary btn-sm">Ver detalle</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="card h-100">
-                                        <img src="/public/images/productos/descarga (3).jpeg" class="card-img-top" alt="Producto Relacionado 3">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title mb-2">Perfume C</h5>
-                                            <p class="card-text text-primary fw-bold mb-1">$110.000</p>
-                                            <a href="#" class="btn btn-outline-primary btn-sm">Ver detalle</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="card h-100">
-                                        <img src="/public/images/productos/descarga (4).jpeg" class="card-img-top" alt="Producto Relacionado 4">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title mb-2">Perfume D</h5>
-                                            <p class="card-text text-primary fw-bold mb-1">$150.000</p>
-                                            <a href="#" class="btn btn-outline-primary btn-sm">Ver detalle</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Puedes agregar más .carousel-item aquí si quieres más slides -->
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#relatedProductsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Anterior</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#relatedProductsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Siguiente</span>
-                    </button>
-                </div>
-            </div>
-        </section>
+          </div>
+        </div>
+      </section>
+      <%- include ('../partials/relatedProducts', {relatedpdcts}) %>
     </main>
 
-        <%- include ('../partials/footer') %>
+    <%- include ('../partials/footer') %>
 
-<script src="/public/js/jquery-1.11.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script> -->
-<script type="text/javascript" src="/public/js/plugins.js"></script>
-<script type="text/javascript" src="/public/js/script.js"></script>
-
-</body>
+    <script src="/public/js/jquery-1.11.0.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script> -->
+    <script type="text/javascript" src="/public/js/plugins.js"></script>
+    <script type="text/javascript" src="/public/js/script.js"></script>
+    <script>
+        const precioAnterior = Number('<%= producto.precio %>' * 1.19).toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 2 });
+        const precioProducto = Number('<%= producto.precio %>').toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 2 });
+        const productPrice = document.getElementById('productPrice');
+        productPrice.innerHTML = `
+            <strong class="text-primary display-6 fw-bold">${precioProducto}</strong
+                ><del class="ms-2">${precioAnterior}</del>`
+    </script>
+  </body>
 </html>

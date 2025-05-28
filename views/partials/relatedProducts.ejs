@@ -1,0 +1,75 @@
+<section class="feat-collection padding-large">
+      <div class="container">
+        <div class="row">
+          <div class="section-header text-center">
+            <h2 class="section-title">También te puede interesar</h2>
+          </div>
+        </div>
+        <div class="row product-content justify-content-center large-box">
+            <% relatedpdcts.forEach(function(product, idx) { %>
+                <div class="col-md-3">
+                    <div class="content-box text-center aos-init aos-animate" data-aos="fade" data-aos-delay="<%= idx * 100 %>">
+                        <figure class="bg-light d-flex justify-content-center align-items-center">
+                            <img src="/public/images/productos/<%= product.img_url %>" class="img-fluid" alt="<%= product.alt_text %>" style="min-width: 17rem;">
+                        </figure>
+                        <div class="category align-center word-break" style="max-height: 3rem; overflow: hidden;">
+                            <a href="/pdctodetail/<%= product.id %>"><p class="text-break"><%= product.nombre %></p></a>
+                        </div>
+                        <span class="price-tag text-center">$<%= product.precio%></span>
+                        <div class="btn-center">
+                            <a href="/pdctodetail/<%= product.id %>" class="btn btn-small btn-primary">Detalles</a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+          <!-- <div class="col-md-3">
+            <div class="content-box text-center aos-init aos-animate" data-aos="fade" data-aos-delay="0">
+              <figure class="bg-grey">
+                <img src="images/pearl-diamond-earrings.png" alt="earring">
+              </figure>
+              <div class="category align-center">
+                <a href="jewellery.html">Pearl Diamond Earrings</a>
+              </div>
+              <span class="price-tag text-center">$34.00</span>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-box text-center aos-init aos-animate" data-aos="fade" data-aos-delay="100">
+              <figure class="bg-grey">
+                <img src="images/gold-silver-necklace.png" alt="earring">
+              </figure>
+              <div class="category align-center">
+                <a href="jewellery.html">The Necklace Gold Silver</a>
+              </div>
+              <span class="price-tag text-center">$78.00</span>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-box text-center aos-init aos-animate" data-aos="fade" data-aos-delay="200">
+              <figure class="bg-grey">
+                <img src="images/wedding-ring.png" alt="earring">
+              </figure>
+              <div class="category align-center">
+                <a href="jewellery.html">Diamond Cold Wedding Ring</a>
+              </div>
+              <span class="price-tag text-center">$54.00</span>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-box text-center aos-init aos-animate" data-aos="fade" data-aos-delay="300">
+              <figure class="bg-grey">
+                <img src="images/gemstone-necklace.png" alt="earring">
+              </figure>
+              <div class="category align-center">
+                <a href="jewellery.html">The Blue Gemstone Necklace</a>
+              </div>
+              <span class="price-tag text-center">$66.00</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn-center">
+          <a href="#" class="btn btn-medium btn-primary">Shop Now</a>
+        </div> -->
+      </div>
+    </section>
+

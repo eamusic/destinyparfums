@@ -42,12 +42,11 @@
               <div class="content-box text-center">
                 <figure class="bg-light">
                   <img src="/public/images/productos/<%= producto.img_url %>" class="img-thumbnail border-0" alt="<%= producto.alt_text %>">
-                  <figcaption class="figure-caption text-center">
-                    <span class="fw-bold">
-                      <a href="/producto/<%= producto.id %>"><%= producto.nombre %></a>
-                    </span><br>
+                  <figcaption class="figure-caption">
+                    <a href="/pdctodetail/<%= producto.id %>">
+                      <p class="fw-bold text-nowrap" style="max-height: 3rem; overflow: hidden;"><%= producto.nombre %></p>
+                    </a>
                     <span class="price-tag text-center">$<%= producto.precio %></span>
-
                   </figcaption>
                 </figure>
               </div>

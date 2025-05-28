@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="product-detail mt-3">
-                                    <h3 class="product-title"><%= producto.nombre %></h3>
+                                    <h3 class="product-title text-nowrap" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;" title="<%= producto.nombre %>"><%= producto.nombre %></h3>
                                     <span class="price">$<%= producto.precio %></span>
                                 </div>
                             </div> <!-- .contenedor -->
@@ -42,8 +42,8 @@
                 <div class="modal fade" id="modal-<%= producto.id %>" tabindex="-1" aria-labelledby="modalLabel-<%= producto.id %>" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalLabel-<%= producto.id %>"><%= producto.nombre %></h5>
+                            <div class="modal-header text-center">
+                                <h3 class="modal-title fw-bold" id="modalLabel-<%= producto.id %>" style="text-transform: uppercase;"><%= producto.nombre %></h3>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                             </div>
                             <div class="modal-body text-center">
@@ -52,8 +52,8 @@
                                 <p><%= producto.descripcion || 'Sin descripción disponible.' %></p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary">Añadir al Carrito</button>
+                                <a type="button" class="btn btn-small btn-outline-dark btn-pill" href="/pdctodetail/<%= producto.id %>">Ver Detalles</a>
+                                <a type="button" class="btn btn-small btn-outline-primary btn-pill">Añadir al Carrito</a>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
             <% }); %>
         </div>
         <div class="btn-center">
-            <a href="#" class="btn btn-medium btn-primary">Comprar Ahora</a>
+            <a href="/shop" class="btn btn-medium btn-primary">Ver todas las Fragancias</a>
         </div>
     </div>
 </section>

@@ -3,6 +3,14 @@ const app = express();
 const path = require('path');
 const routes = require('./routes/index');
 const bodyParser = require('body-parser');
+const mysql = require('mysql');
+// Conexión a la base de datos
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'destinyparfums'
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

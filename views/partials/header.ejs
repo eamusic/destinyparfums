@@ -1,5 +1,5 @@
 <div class="header-wrap">
-    <nav class="secondary-nav border-top border-bottom" style="background-color: #c0a86a;">
+    <nav class="secondary-nav border-top border-bottom sticky-top" style="background-color: #c0a86a;">
         <div class="container-fluid">
             <div class="row">
                 <div class="top-menu d-flex flex-wrap justify-content-between">
@@ -47,7 +47,7 @@
             </div>
         </div>
     </nav>
-    <nav class="primary-nav">
+    <nav class="primary-nav" id="mainNav">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-10 col-sm-6">
@@ -92,8 +92,8 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" class="text-uppercase">Promociones
-                                                <!-- <span class="badge bg-primary">PRO</span> -->
+                                            <a href="#" class="text-uppercase">Ofertas Especiales
+                                                <span class="badge bg-primary">Por Tiempo Limitado</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -113,4 +113,14 @@
             </div>
         </div>
     </nav>
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('fixed-top');
+            } else {
+                nav.classList.remove('fixed-top');
+            }
+        });
+    </script>
 </div>
