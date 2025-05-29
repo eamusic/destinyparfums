@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const { body, validationResult } = require('express-validator');
+const nodemon = require('nodemon');
 
 
 // Conexión a la base de datos
@@ -97,10 +98,78 @@ const pdctoDetail = (req, res) => {
         }
     );
     return;
-}
+};
+
+const pdctsFinder = (req, res) => {
+    const { id_marca, id_categoria } = req.query;
+
+    // Validar que se proporcionen al menos uno de los parámetros
+    if (!id_marca && !id_categoria) {
+        return res.status(400).json({ error: "Se requiere al menos un id_marca o id_categoria para la búsqueda" });
+    }
+
+    // Consultar la tabla marcas
+    connection.query("SELECT * FROM marcas", (err, marcas) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+
+        // Verificar que cada marca tenga logo_marca; si es nulo o vacío, asignar default
+        marcas.forEach(marca => {
+            if (!marca.logo_marca) {
+                marca.logo_marca = "https://placehold.co/200";
+            } else {
+                marca.logo_marca = "/public/images/marcas/" + marca.logo_marca;
+            }
+        })
+
+        // Construir la consulta dinámica para productos e imágenes
+        let query = `
+            SELECT productos.*, imgs_productos.img_url, imgs_productos.alt_text 
+            FROM productos 
+            LEFT JOIN imgs_productos ON productos.id = imgs_productos.producto_id 
+            WHERE 1=1
+        `;
+        let params = [];
+
+        if (id_marca) {
+            query += " AND id_marca = ?";
+            params.push(id_marca);
+        }
+
+        if (id_categoria) {
+            query += " AND id_categoria = ?";
+            params.push(id_categoria);
+        }
+
+        // Ejecutar la consulta para productos
+        connection.query(query, params, (error, results) => {
+            if (error) {
+                console.error("Error al buscar productos:", error);
+                return res.status(500).json({ error: "Error interno del servidor" });
+            }
+
+            // Formatear precios sin decimales
+            results.forEach(producto => {
+                if (producto.precio !== undefined && producto.precio !== null) {
+                    producto.precio = Number(producto.precio).toLocaleString('es-CO', {
+                        style: 'currency',
+                        currency: 'COP',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    });
+                }
+            });
+
+            const title = 'Buscar Productos - Destiny Perfumería';
+            res.render('pages/pdctsSearch', { title, productos: results, marcas });
+        });
+    });
+};
 
 module.exports = {
     index,
     shop,
-    pdctoDetail
+    pdctoDetail,
+    pdctsFinder
 }

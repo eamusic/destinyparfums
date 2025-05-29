@@ -1,4 +1,7 @@
-<title><%= title %></title>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title><%= title %></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,4 +48,58 @@
         top: 185px; /* Desplaza el contenido hacia abajo (altura del contenedor) */
         opacity: 1; /* Muestra el contenido al hacer hover */
       }
+
+    /* Reinicio básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body .homepage {
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* height: 100vh; */
+    }
+
+    /* Contenedor del slider */
+    .slider-container {
+      width: 90%;
+      overflow: hidden;
+      position: relative;
+      padding: 20px 0;
+    }
+
+    /* Slider con flex y uso de variable custom para el desplazamiento exacto */
+    .slider {
+      display: flex;
+      /* Se usará la variable --slider-width, que se asigna dinámicamente desde JavaScript */
+      animation: scroll 95s linear infinite;
+    }
+
+    /* Al hacer hover se pausa la animación */
+    .slider-container:hover .slider {
+      animation-play-state: paused;
+    }
+
+    .slider img {
+      min-width: 100px;
+      margin-right: 10px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+    }
+
+    /* Animación desplazándose exactamente el ancho de la primera serie de imágenes */
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-1 * var(--slider-width)));
+      }
+    }
+
     </style>
+</head>

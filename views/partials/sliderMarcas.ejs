@@ -1,0 +1,39 @@
+<nav class="secondary-nav mt-1 mb-4 bg-light">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="top-menu d-flex flex-wrap justify-content-center">
+        <div class="slider-container">
+          <div class="slider" id="slider">
+            <% marcas.forEach(marca => { %>
+            <img src="<%= marca.logo_marca %>" alt="<%= marca.nombre %>" />
+            <% }); %>
+
+            <!-- <img src="https://placehold.co/50" alt="Imagen 2" />
+            <img src="https://placehold.co/50" alt="Imagen 3" />
+            <img src="https://placehold.co/50" alt="Imagen 4" />
+            <img src="https://placehold.co/50" alt="Imagen 5" />
+            <img src="https://placehold.co/50" alt="Imagen 6" /> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const slider = document.getElementById("slider");
+
+      // Duplicamos el contenido para crear el efecto loop sin cortes
+      const sliderContent = slider.innerHTML;
+      slider.innerHTML += sliderContent;
+
+      // Esperamos al siguiente frame para que el DOM se actualice y se calculen los tamaños
+      requestAnimationFrame(() => {
+        // Calculamos el ancho de la primera serie de imágenes:
+        const sliderWidth = slider.scrollWidth / 2;
+        // Asignamos el ancho calculado a una variable CSS custom (para usar en la animación)
+        slider.style.setProperty("--slider-width", `${sliderWidth}px`);
+      });
+    });
+  </script>
+

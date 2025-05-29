@@ -25,6 +25,19 @@ app.use((req, res, next)=>{
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extend: true}));
 
+// Consulta a la tabla marcas para tomarlo desde partials/sliderMarcas
+// app.get('/pdctsfinder', (req, res) => {
+//     connection.query("SELECT * FROM marcas", (err, result) => {
+//         if (err) {
+//             res.status(500).send(err);
+//         } else {
+//             res.send({ marcas: result });
+//             return;
+//         }
+//     });
+// });
+
+
 // Rutas
 app.use(routes);
 

@@ -19,4 +19,8 @@ router.get('/contact', (req, res) => {
     res.render('pages/contact', { title });
 });
 
+// Ruta para buscar productos por id_marca e id_categoria
+router.get('/pdctsfinder', indexController.pdctsFinder);
+
+
 module.exports = router;
