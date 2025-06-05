@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const app = express();
 const path = require('path');
 const routes = require('./routes/index');
@@ -22,8 +23,17 @@ app.use((req, res, next)=>{
     console.log(`${req.url} - ${req.method}`);
     next();
 });
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extend: true}));
+app.use(express.json());
+app.use(express.urlencoded({extend: true}));
+
+// Configuración de sesión
+app.use(session({
+  secret: 'destiny_perfumeria', // Debe ser una cadena secreta única
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // En producción, si usas HTTPS, cambia a true
+}));
+
 
 // Consulta a la tabla marcas para tomarlo desde partials/sliderMarcas
 // app.get('/pdctsfinder', (req, res) => {

@@ -27,10 +27,8 @@ const index =  (req, res) => {
                 }
             });
             
-            
-            
             const title = 'Destiny Perfumería';
-            res.render('pages/index', { title, productos: results });
+            res.render('pages/index', { title, productos: results });   
         }
     );
     return;
@@ -119,9 +117,9 @@ const pdctsFinder = (req, res) => {
     const { id_marca, id_categoria } = req.query;
 
     // Validar que se proporcionen al menos uno de los parámetros
-    if (!id_marca && !id_categoria) {
-        return res.status(400).json({ error: "Se requiere al menos un id_marca o id_categoria para la búsqueda" });
-    }
+    // if (!id_marca && !id_categoria) {
+    //     return res.status(400).json({ error: "Se requiere al menos un id_marca o id_categoria para la búsqueda" });
+    // }
 
     // Consultar la tabla marcas
     connection.query("SELECT * FROM marcas", (err, marcas) => {
@@ -182,9 +180,99 @@ const pdctsFinder = (req, res) => {
     });
 };
 
+// controllers/cartController.js
+const addToCart = (req, res) => {
+    const productoId = req.params.id;
+
+    // Consultar el producto con sus relaciones
+    connection.query(
+        `SELECT productos.*, imgs_productos.img_url, categorias.nombre AS categoria, marcas.nombre AS marca
+         FROM productos
+         LEFT JOIN imgs_productos ON productos.id = imgs_productos.producto_id
+         LEFT JOIN categorias ON productos.id_categoria = categorias.id
+         LEFT JOIN marcas ON productos.id_marca = marcas.id
+         WHERE productos.id = ? LIMIT 1`,
+        [productoId],
+        (error, results) => {
+            if (error || results.length === 0) {
+                return res.status(404).json({ error: 'Producto no encontrado' });
+            }
+
+            const producto = results[0];
+
+            // Inicializar el carrito si no existe
+            if (!req.session.cart) {
+                req.session.cart = [];
+            }
+
+            // Verificar si el producto ya está en el carrito
+            const index = req.session.cart.findIndex(item => item.id === producto.id);
+
+            if (index > -1) {
+                // Si ya existe, aumentar la cantidad
+                req.session.cart[index].quantity += 1;
+            } else {
+                // Si no existe, agregarlo al carrito
+                req.session.cart.push({
+                    id: producto.id,
+                    name: producto.nombre,
+                    price: Number(producto.precio),
+                    quantity: 1,
+                    img_url: producto.img_url,
+                    categoria: producto.categoria,
+                    marca: producto.marca
+                });
+            }
+
+            console.log('Carrito actualizado:', req.session.cart);
+            res.status(200).json({ message: 'Producto agregado al carrito', cart: req.session.cart });
+            // return res.render('pages/index', { cart: req.session.cart });
+            // return res.render('partials/carritoCompras', { cart: req.session.cart });
+        }
+    );
+//   // Se leen los datos del producto desde el body
+//   const { productId, productName, price, quantity } = req.body;
+
+//   // Validación simple: se puede extender según requerimientos
+//   if (!productId || !productName || !price || !quantity) {
+//     return res.status(400).json({ error: 'Faltan datos del producto' });
+//   }
+
+//   // Crear el objeto producto
+//   const product = {
+//     id: productId,
+//     name: productName,
+//     price: Number(price),
+//     quantity: Number(quantity)
+//   };
+
+//   // Inicializar el carrito en la sesión si no existe
+//   if (!req.session.cart) {
+//     req.session.cart = [];
+//   }
+
+//   // Verificar si el producto ya se encuentra en el carrito
+//   const index = req.session.cart.findIndex(item => item.id === product.id);
+
+//   if (index > -1) {
+//     // Si ya existe, se actualiza la cantidad
+//     req.session.cart[index].quantity += product.quantity;
+//   } else {
+//     // Si no existe, se agrega al carrito
+//     req.session.cart.push(product);
+//   }
+
+//   // Renderizar la vista parcial con el carrito actualizado
+//   // La vista parcial se encargará de mostrar el contenido del carrito.
+//     // Aquí se puede enviar una respuesta JSON o redirigir a otra página según sea necesario
+//     return res.status(200).json({ message: 'Producto agregado al carrito', cart: req.session.cart });
+// //   return res.render('partials/carritoCompras', { cart: req.session.cart });
+};
+
 module.exports = {
     index,
     shop,
     pdctoDetail,
-    pdctsFinder
+    pdctsFinder,
+    addToCart
 }

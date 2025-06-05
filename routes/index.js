@@ -22,5 +22,8 @@ router.get('/contact', (req, res) => {
 // Ruta para buscar productos por id_marca e id_categoria
 router.get('/pdctsfinder', indexController.pdctsFinder);
 
+// Ruta para agregar un producto al carrito
+router.all('/add-to-cart/:id', indexController.addToCart);
+
 
 module.exports = router;
