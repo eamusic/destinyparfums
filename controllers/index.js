@@ -47,10 +47,25 @@ const shop = (req, res) => {
             if (error) {
                 return res.status(500).send('Error en la base de datos');
             }
-            const title = 'Tienda - Destiny Perfumería';
-            res.render('pages/shop', { title, productos: results });
+            console.log(results[0].marca);
+        // Consultar la tabla marcas
+    connection.query("SELECT * FROM marcas", (err, marcas) => {
+        if (err) {
+            return res.status(500).send(err);
         }
-    );
+
+        // Verificar que cada marca tenga logo_marca; si es nulo o vacío, asignar default
+        marcas.forEach(marca => {
+            if (!marca.logo_marca) {
+                marca.logo_marca = "https://placehold.co/200";
+            } else {
+                marca.logo_marca = "/public/images/marcas/" + marca.logo_marca;
+            }
+        })
+            const title = 'Tienda - Destiny Perfumería';
+            res.render('pages/shop', { title, productos: results, marcas });
+        })
+});
 }
 
 const pdctoDetail = (req, res) => {

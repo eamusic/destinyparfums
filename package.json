@@ -15,7 +15,8 @@
   "description": "Destiny Perfumería",
   "main": "./app.js",
   "scripts": {
-    "start": "node ./app.js",
+    "build": "webpack",
+    "start": "node dist/bundle.js",
     "dev": "nodemon ./app.js"
   },
   "repository": {
@@ -36,6 +37,8 @@
   "homepage": "https://github.com/eamusic/destinyparfums#readme",
   "devDependencies": {
     "nodemon": "^3.1.10",
-    "webpack-cli": "^6.0.1"
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-node-externals": "^3.0.0"
   }
 }

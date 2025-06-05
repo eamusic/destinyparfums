@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <%- include ('../partials/head') %>
-</head>
+<%- include ('../partials/head') %>
 <body class="homepage">
-    <header id="header">
-        <%- include('../partials/header') %>
-    </header>
-    
+    <%- include('../partials/header') %>
     <main>
         <section
-        class="contact-page padding-large mb-3"
+        class="fadeSections contact-page padding-large mb-3"
         style="background: url('public/images/banner-about.jpg')"
         >
         <div class="container">
@@ -27,7 +20,7 @@
             </div>
         </div>
         </section>
-        <section class="contact-information bg-grey padding-large">
+        <section class="fadeSections contact-information bg-grey padding-large">
         <div class="container">
             <div class="row">
             <div class="col-md-6">
@@ -116,7 +109,7 @@
             </div>
         </div>
         </section>
-        <section class="google-map">
+        <section class="fadeSections google-map">
         <div class="mapouter">
             <div class="gmap_canvas">
             <iframe
@@ -153,9 +146,7 @@
         </section>
     </main>
 
-    <footer>
-        <%- include('../partials/footer') %>
-    </footer>
+    <%- include('../partials/footer') %>
 
 
 <script src="/public/js/jquery-1.11.0.min.js"></script>
