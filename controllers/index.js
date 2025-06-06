@@ -26,9 +26,19 @@ const index =  (req, res) => {
                     producto.precio = Number(producto.precio).toLocaleString('es', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 });
                 }
             });
+
+            // Verificar si el carrito existe y enviar respuesta al body
+            let cart = '';
+            if (req.session.cart) {
+                cart = req.session.cart;
+                console.log('Carrito encontrado:', req.session.cart);
+            } else {
+                console.log('Carrito no encontrado, inicializando uno nuevo');
+                cart = req.session.cart = [];
+            }
             
             const title = 'Destiny Perfumería';
-            res.render('pages/index', { title, productos: results });   
+            res.render('pages/index', { title, productos: results, cart });   
         }
     );
     return;
@@ -226,53 +236,36 @@ const addToCart = (req, res) => {
 
             console.log('Carrito actualizado:', req.session.cart);
             res.status(200).json({ message: 'Producto agregado al carrito', cart: req.session.cart });
-            // return res.render('pages/index', { cart: req.session.cart });
-            // return res.render('partials/carritoCompras', { cart: req.session.cart });
         }
     );
-//   // Se leen los datos del producto desde el body
-//   const { productId, productName, price, quantity } = req.body;
-
-//   // Validación simple: se puede extender según requerimientos
-//   if (!productId || !productName || !price || !quantity) {
-//     return res.status(400).json({ error: 'Faltan datos del producto' });
-//   }
-
-//   // Crear el objeto producto
-//   const product = {
-//     id: productId,
-//     name: productName,
-//     price: Number(price),
-//     quantity: Number(quantity)
-//   };
-
-//   // Inicializar el carrito en la sesión si no existe
-//   if (!req.session.cart) {
-//     req.session.cart = [];
-//   }
-
-//   // Verificar si el producto ya se encuentra en el carrito
-//   const index = req.session.cart.findIndex(item => item.id === product.id);
-
-//   if (index > -1) {
-//     // Si ya existe, se actualiza la cantidad
-//     req.session.cart[index].quantity += product.quantity;
-//   } else {
-//     // Si no existe, se agrega al carrito
-//     req.session.cart.push(product);
-//   }
-
-//   // Renderizar la vista parcial con el carrito actualizado
-//   // La vista parcial se encargará de mostrar el contenido del carrito.
-//     // Aquí se puede enviar una respuesta JSON o redirigir a otra página según sea necesario
-//     return res.status(200).json({ message: 'Producto agregado al carrito', cart: req.session.cart });
-// //   return res.render('partials/carritoCompras', { cart: req.session.cart });
 };
+// Remover articulo del carrito
+const removeFromCart = (req, res) => {
+    const productoId = req.params.id;
+
+    // Verificar si el carrito existe
+    if (!req.session.cart) {
+        return res.status(404).json({ error: 'Carrito no encontrado' });
+    }
+
+    // Buscar el índice del producto en el carrito
+    const index = req.session.cart.findIndex(item => item.id === productoId);
+
+    if (index > -1) {
+        // Si se encuentra, eliminarlo del carrito
+        req.session.cart.splice(index, 1);
+        console.log('Producto eliminado del carrito:', productoId);
+        res.status(200).json({ message: 'Producto eliminado del carrito', cart: req.session.cart });
+    } else {
+        res.status(404).json({ error: 'Producto no encontrado en el carrito' });
+    }
+}
 
 module.exports = {
     index,
     shop,
     pdctoDetail,
     pdctsFinder,
-    addToCart
+    addToCart,
+    removeFromCart
 }

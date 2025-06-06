@@ -25,5 +25,8 @@ router.get('/pdctsfinder', indexController.pdctsFinder);
 // Ruta para agregar un producto al carrito
 router.all('/add-to-cart/:id', indexController.addToCart);
 
+// Ruta para eliminar un producto del carrito
+router.all('/remove-from-cart/:id', indexController.removeFromCart);
+
 
 module.exports = router;
