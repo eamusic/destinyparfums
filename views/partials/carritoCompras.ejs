@@ -24,7 +24,40 @@
         <!-- Shopping Cart Items -->
         <div class="col-auto">
             <!-- Cart Item -->
-            <div id="itemsProductos"></div>
+            <div id="itemsProductos">
+              <% if (typeof cart !== "undefined" && Object.keys(cart).length > 0) { %>
+                <% Object.values(cart).forEach(function(producto) { %>
+                  <div class="cart-item d-flex justify-content-between">
+                    <div class="d-flex">
+                      <img src="/public/images/productos/<%= producto.img_url %>" alt="<%= producto.name %>" class="product-img me-3">
+                      <div>
+                        <h5><%= producto.marca %></h5>
+                        <p class="text-muted"><%= producto.name %></p>
+                        <div class="input-group product-qty" style="max-width: 150px;">
+                          <span class="input-group-btn">
+                            <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
+                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                            </button>
+                          </span>
+                          <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="1" min="1" max="100">
+                          <span class="input-group-btn">
+                            <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+                              <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column justify-content-between">
+                      <span><%= producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) %></span>
+                      <a class="btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" href="/remove-from-cart/<%= producto.id %>"><i class="bi bi-bag-x-fill"></i></a>
+                    </div>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <p class="text-center">Tu carrito está vacío.</p>
+              <% } %>
+            </div>
         </div>
 
         <!-- Cart Summary -->
@@ -61,51 +94,6 @@
         console.error("Elemento con id 'itemsProductos' no encontrado.");
         return;
     }
-    // Se verifica si el carrito esta vacío al cargar la página tomando el resultado de la petición AJAX
-    $.getJSON("/")
-        .done(function (data) {
-            // Se verifica que se hayan recibido datos.
-            if (Object.values(data.cart).length === 0) {
-                itemsProductos.innerHTML = `<p class="text-center">Tu carrito está vacío.</p>`;
-                return;
-            }
-            
-            // Se itera sobre los productos recibidos. Se asume que `data` es un objeto
-            // cuyos valores son los productos; si fuera un array, se podría usar directamente data.forEach.
-            Object.values(data.cart).forEach(producto => {
-                const item = document.createElement("div");
-                item.className = "cart-item d-flex justify-content-between";
-                item.innerHTML = `
-                    <div class="d-flex">
-                        <img src="/public/images/productos/${ producto.img_url }" alt="${ producto.name }" class="product-img me-3">
-                        <div>
-                            <h5>${ producto.marca }</h5>
-                            <p class="text-muted">${ producto.name }</p>
-                            <div class="input-group product-qty" style="max-width: 150px;">
-                                <span class="input-group-btn">
-                                    <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
-                                        <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                                    </button>
-                                </span>
-                                <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="1" min="1" max="100">
-                                <span class="input-group-btn">
-                                    <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
-                                        <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column justify-content-between">
-                        <span>${ producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) }</span>
-                        <a class="btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" href="/remove-from-cart/${ producto.id }"><i class="bi bi-bag-x-fill"></i></a>
-                    </div>
-                `;
-                itemsProductos.appendChild(item);
-            });
-        })
-
-    
     // Se obtienen todos los botones de "Añadir al Carrito"
     const addToCartButtons = document.querySelectorAll(".btn.btn-outline-dark.btn-small.border-0");
     

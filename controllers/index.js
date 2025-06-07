@@ -217,7 +217,8 @@ const addToCart = (req, res) => {
 
             // Verificar si el producto ya está en el carrito
             const index = req.session.cart.findIndex(item => item.id === producto.id);
-
+            console.log('Producto encontrado:', producto);
+            
             if (index > -1) {
                 // Si ya existe, aumentar la cantidad
                 req.session.cart[index].quantity += 1;
