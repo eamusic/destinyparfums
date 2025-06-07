@@ -25,7 +25,7 @@
         <div class="col-auto">
             <!-- Cart Item -->
             <div id="itemsProductos">
-              <% if (typeof cart !== "undefined" && Object.keys(cart).length > 0) { %>
+              <% if (typeof cart !== "undefined" && Object.values(cart).length > 0) { %>
                 <% Object.values(cart).forEach(function(producto) { %>
                   <div class="cart-item d-flex justify-content-between">
                     <div class="d-flex">
@@ -39,7 +39,7 @@
                               <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
                             </button>
                           </span>
-                          <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="1" min="1" max="100">
+                          <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="<%= producto.quantity %>" min="1" max="100">
                           <span class="input-group-btn">
                             <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
                               <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
@@ -87,6 +87,47 @@
 </div>
 <script src="/public/js/jquery-1.11.0.min.js"></script>
 <script>
+    async function addCart(id) {
+        const productId = id;
+        const itemsProductos = document.getElementById('itemsProductos');
+        itemsProductos.innerHTML = "";
+        $.getJSON("/add-to-cart/" + productId).done(function (data) {
+            console.log(`Producto añadido al carrito: ${JSON.stringify(data.cart)}`);
+             Object.values(data.cart).forEach(producto => {
+                        const item = document.createElement("div");
+                        item.className = "cart-item d-flex justify-content-between";
+                        item.innerHTML = `
+                            <div class="d-flex">
+                                <img src="/public/images/productos/${ producto.img_url }" alt="${ producto.name }" class="product-img me-3">
+                                <div>
+                                    <h5>${ producto.marca }</h5>
+                                    <p class="text-muted">${ producto.name }</p>
+                                    <div class="input-group product-qty" style="max-width: 150px;">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
+                                                <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                                            </button>
+                                        </span>
+                                        <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="${ producto.quantity }" min="1" max="100">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+                                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-between">
+                                <span>${ producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) }</span>
+                                <a class="btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" href="/remove-from-cart/${ producto.id }"><i class="bi bi-bag-x-fill"></i></a>
+                            </div>
+                        `;
+                        itemsProductos.appendChild(item);
+                    });
+        })
+    }
+</script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", function () {
     // Se obtiene el contenedor donde se renderizarán los productos del carrito
     const itemsProductos = document.getElementById("itemsProductos");
@@ -110,7 +151,6 @@
             // Se usa $.getJSON para solicitar los detalles del producto agregado.
             $.getJSON("/add-to-cart/" + productId)
                 .done(function (data) {
-                    console.log(`Producto añadido al carrito: ${JSON.stringify(data.cart)}`);
                     // Obtener el valor del objeto data.cart y el valor de img_url
                     // Ejemplo: mostrar en consola los productos y sus imágenes
                     Object.values(data.cart).forEach(producto => {
@@ -144,7 +184,7 @@
                                                 <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
                                             </button>
                                         </span>
-                                        <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="1" min="1" max="100">
+                                        <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="${ producto.quantity }" min="1" max="100">
                                         <span class="input-group-btn">
                                             <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
                                                 <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
@@ -167,4 +207,4 @@
         });
     });
 });
-</script>
+</script> -->

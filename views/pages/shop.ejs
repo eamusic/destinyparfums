@@ -42,7 +42,7 @@
                                     <div class="card-img-overlay">
                                         <div
                                             class="card-title d-flex flex-direction-row justify-content-center align-items-center">
-                                            <button type="button" class="btn btn-outline-dark btn-small border-0">Añadir al
+                                            <button type="button" class="btn btn-outline-dark btn-small border-0" onclick="addCart('<%= producto.id %>')">Añadir al
                                                 Carrito</button>
                                             <button type="button" class="btn btn-outline-dark btn-small border-0"
                                                 title="Añadir a la lista de deseos"><i class="icon icon-heart"></i></button>
@@ -74,7 +74,7 @@
                             </div>
                             <div class="modal-footer">
                                 <a type="button" class="btn btn-small btn-outline-dark btn-pill" href="/pdctodetail/<%= producto.id %>">Ver Detalles</a>
-                                <a type="button" class="btn btn-small btn-outline-primary btn-pill">Añadir al Carrito</a>
+                                <a type="button" class="btn btn-small btn-outline-primary btn-pill" data-bs-dismiss="modal"   onclick="addCart('<%= producto.id %>')">Añadir al Carrito</a>
                             </div>
                         </div>
                     </div>

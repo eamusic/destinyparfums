@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, buildCheckFunction } = require('express-validator');
 const nodemon = require('nodemon');
 
 
@@ -10,6 +10,11 @@ const connection = mysql.createConnection({
     password: '',
     database: 'destinyparfums'
 });
+
+// función globar shoppinCart
+function cartHasProducts(req) {
+    return Array.isArray(req.session.cart) && req.session.cart.length > 0;
+}
 
 const index =  (req, res) => {
     connection.query(
@@ -28,8 +33,7 @@ const index =  (req, res) => {
             });
 
             // Verificar si el carrito existe y enviar respuesta al body
-            let cart = '';
-            if (req.session.cart) {
+            if (cartHasProducts(req)) {
                 cart = req.session.cart;
                 console.log('Carrito encontrado:', req.session.cart);
             } else {
@@ -42,6 +46,32 @@ const index =  (req, res) => {
         }
     );
     return;
+}
+
+const about = (req, res) =>{
+    // Verificar si el carrito existe y enviar respuesta al body
+    if (cartHasProducts(req)) {
+        cart = req.session.cart;
+        console.log('Carrito encontrado:', req.session.cart);
+    } else {
+        console.log('Carrito no encontrado, inicializando uno nuevo');
+        cart = req.session.cart = [];
+    }
+    const title = 'Destiny Perfumería - Quienes Somos';
+    res.render('pages/about', { title, cart });
+}
+
+const contact = (req, res) => {
+    // Verificar si el carrito existe y enviar respuesta al body
+    if (cartHasProducts(req)) {
+        cart = req.session.cart;
+        console.log('Carrito encontrado:', req.session.cart);
+    } else {
+        console.log('Carrito no encontrado, inicializando uno nuevo');
+        cart = req.session.cart = [];
+    }
+    const title = 'Destiny Perfumería - Contacto';
+    res.render('pages/contact', { title, cart });
 }
 
 const shop = (req, res) => {
@@ -69,9 +99,19 @@ const shop = (req, res) => {
             } else {
                 marca.logo_marca = "/public/images/marcas/" + marca.logo_marca;
             }
-        })
+        });
+
+        // Verificar si el carrito existe y enviar respuesta al body
+            if (cartHasProducts(req)) {
+                cart = req.session.cart;
+                console.log('Carrito encontrado:', req.session.cart);
+            } else {
+                console.log('Carrito no encontrado, inicializando uno nuevo');
+                cart = req.session.cart = [];
+            }
+
             const title = 'Tienda - Destiny Perfumería';
-            res.render('pages/shop', { title, productos: results, marcas });
+            res.render('pages/shop', { title, productos: results, marcas, cart });
         })
 });
 }
@@ -113,9 +153,16 @@ const pdctoDetail = (req, res) => {
                     const relatedpdcts = relatedResults || [];
                     // results[0].relatedpdcts = relatedpdcts;
                     console.log('relatedpdcts', relatedpdcts);
-                    
+                    // Verificar si el carrito existe y enviar respuesta al body
+                    if (cartHasProducts(req)) {
+                        cart = req.session.cart;
+                        console.log('Carrito encontrado:', req.session.cart);
+                    } else {
+                        console.log('Carrito no encontrado, inicializando uno nuevo');
+                        cart = req.session.cart = [];
+                    }
                     const title = 'Destiny Perfumería - Detalles Perfume';
-                    res.render('pages/pdctoDetail', { title, producto: results[0], imagenes: results[0].imagenes, relatedpdcts});
+                    res.render('pages/pdctoDetail', { title, producto: results[0], imagenes: results[0].imagenes, relatedpdcts, cart});
                 }
             );
         }
@@ -244,22 +291,22 @@ const addToCart = (req, res) => {
 const removeFromCart = (req, res) => {
     const productoId = req.params.id;
 
-    // Verificar si el carrito existe
-    if (!req.session.cart) {
-        return res.status(404).json({ error: 'Carrito no encontrado' });
-    }
-
-    // Buscar el índice del producto en el carrito
-    const index = req.session.cart.findIndex(item => item.id === productoId);
-
-    if (index > -1) {
-        // Si se encuentra, eliminarlo del carrito
-        req.session.cart.splice(index, 1);
-        console.log('Producto eliminado del carrito:', productoId);
-        res.status(200).json({ message: 'Producto eliminado del carrito', cart: req.session.cart });
+    // Verificar si el carrito existe y enviar respuesta al body
+    if (cartHasProducts(req)) {
+        cart = req.session.cart;
+        console.log('Carrito encontrado:', req.session.cart);
+        // Buscar el índice del producto en el carrito
+        const index = req.session.cart.findIndex(item => item.id === productoId);
+        if (index > -1) {
+            // Si se encuentra, eliminarlo del carrito
+            req.session.cart.splice(index, 1);
+            console.log('Producto eliminado del carrito:', productoId);
+            res.status(200).json({ message: 'Producto eliminado del carrito', cart: req.session.cart });
+        }
     } else {
         res.status(404).json({ error: 'Producto no encontrado en el carrito' });
     }
+    return;
 }
 
 module.exports = {
@@ -268,5 +315,8 @@ module.exports = {
     pdctoDetail,
     pdctsFinder,
     addToCart,
-    removeFromCart
+    removeFromCart,
+    cartHasProducts,
+    about,
+    contact
 }
