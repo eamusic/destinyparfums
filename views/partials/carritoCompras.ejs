@@ -1,89 +1,95 @@
 <!-- offcanvas carrito de compras -->
-<div
-  class="offcanvas offcanvas-end"
-  tabindex="-1"
-  id="offcanvasCart"
-  aria-labelledby="offcanvasCartLabel"
-  data-bs-scroll="true"
-  data-bs-backdrop="false"
-  aria-controls="offcanvasCart"
-  style="width: 48rem; max-width: 33rem"
->
-  <div class="offcanvas-header">
-    <h5 id="offcanvasCartLabel" class="text-center">Tu Carrito de Compras</h5>
-    <button
-      type="button"
-      class="btn-close text-reset"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    ></button>
-  </div>
-  <div class="offcanvas-body" style="background-color: rgb(184, 134, 11);">
-  <div class="cart-container d-flex justify-content-center mt-0">
-    <div class="row">
-        <!-- Shopping Cart Items -->
-        <div class="col-auto">
-            <!-- Cart Item -->
-            <div id="itemsProductos">
-              <% if (typeof cart !== "undefined" && Object.values(cart).length > 0) { %>
-                <% Object.values(cart).forEach(function(producto) { %>
-                  <div class="cart-item d-flex justify-content-between">
-                    <div class="d-flex">
-                      <img src="/public/images/productos/<%= producto.img_url %>" alt="<%= producto.name %>" class="product-img me-3">
-                      <div>
-                        <h5><%= producto.marca %></h5>
-                        <p class="text-muted"><%= producto.name %></p>
-                        <div class="input-group product-qty" style="max-width: 150px;">
-                          <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                          </span>
-                          <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="<%= producto.quantity %>" min="1" max="100">
-                          <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
-                              <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                          </span>
-                        </div>
-                      </div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel"
+    data-bs-scroll="true" data-bs-backdrop="false" style="width: 48rem; max-width: 33rem">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasCartLabel" class="text-center">Tu Carrito de Compras</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" style="background-color: rgb(184, 134, 11);">
+        <div class="cart-container d-flex justify-content-center mt-0">
+            <div class="row">
+                <!-- Shopping Cart Items -->
+                <div class="col-auto">
+                    <!-- Cart Item -->
+                    <div id="itemsProductos">
+                        <% if (typeof cart !=="undefined" && Object.values(cart).length> 0) { %>
+                            <% Object.values(cart).forEach(function(producto) { %>
+                                <div class="cart-item d-flex justify-content-between" data-id="<%= producto.id %>">
+                                    <div class="d-flex">
+                                        <img src="/public/images/productos/<%= producto.img_url %>"
+                                            alt="<%= producto.name %>" class="product-img me-3">
+                                        <div>
+                                            <h5>
+                                                <%= producto.marca %>
+                                            </h5>
+                                            <p class="text-muted">
+                                                <%= producto.name %>
+                                            </p>
+                                            <div class="input-group product-qty" style="max-width: 150px;">
+                                                <span class="input-group-btn">
+                                                    <button type="button"
+                                                        class="quantity-left-minus btn btn-light btn-number"
+                                                        data-type="minus" data-field="">
+                                                        <svg width="16" height="16">
+                                                            <use xlink:href="#minus"></use>
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                                <input type="text" id="quantity" name="quantity"
+                                                    class="form-control quantity input-number text-center"
+                                                    value="<%= producto.quantity %>" min="1" max="100">
+                                                <span class="input-group-btn">
+                                                    <button type="button"
+                                                        class="quantity-right-plus btn btn-light btn-number"
+                                                        data-type="plus" data-field="">
+                                                        <svg width="16" height="16">
+                                                            <use xlink:href="#plus"></use>
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-between">
+                                        <span>
+                                            <%= producto.price.toLocaleString('es-CO', { style: 'currency' ,
+                                                currency: 'COP' }) %>
+                                        </span>
+                                        <a class="remove-item btn btn-sm btn-danger btn-pill" title="Quitar del Carrito"
+                                            data-id="<%= producto.id %>"><i class="bi bi-bag-x-fill"></i></a>
+                                    </div>
+                                </div>
+                                <% }); %>
+                                    <% } else { %>
+                                        <p class="text-center">Tu carrito está vacío.</p>
+                                        <% } %>
                     </div>
-                    <div class="d-flex flex-column justify-content-between">
-                      <span><%= producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) %></span>
-                      <a class="btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" href="/remove-from-cart/<%= producto.id %>"><i class="bi bi-bag-x-fill"></i></a>
-                    </div>
-                  </div>
-                <% }); %>
-              <% } else { %>
-                <p class="text-center">Tu carrito está vacío.</p>
-              <% } %>
-            </div>
-        </div>
+                </div>
 
-        <!-- Cart Summary -->
-        <div class="col-auto ms-auto" id="subtotales">
-            <div class="cart-summary d-flex">
-                <h4>Resumen de Compras</h4>
-                    <ul class="list-unstyled">
-                        <li class="d-flex justify-content-between">
-                            <span>Subtotal:</span>
-                            <span>$45.98</span>
-                        </li>
-                        <li class="d-flex justify-content-between">
-                            <span>Shipping:</span>
-                            <span>$5.00</span>
-                        </li>
-                        <li class="d-flex justify-content-between">
-                            <span class="total-price">Total:</span>
-                            <span class="total-price">$50.98</span>
-                        </li>
-                    </ul>
-                    <button class="btn btn-small btn-checkout w-100">Pagar</button>
+                <!-- Cart Summary -->
+                <div class="col-auto ms-auto" id="subtotales">
+                    <div class="cart-summary d-flex">
+                        <h4>Resumen de Compras</h4>
+                        <ul class="list-unstyled">
+                            <li class="d-flex justify-content-between">
+                                <span>Subtotal:</span>
+                                <span>$45.98</span>
+                            </li>
+                            <li class="d-flex justify-content-between">
+                                <span>Shipping:</span>
+                                <span>$5.00</span>
+                            </li>
+                            <li class="d-flex justify-content-between">
+                                <span class="total-price">Total:</span>
+                                <span class="total-price">$50.98</span>
+                            </li>
+                        </ul>
+                        <button class="btn btn-small btn-checkout w-100">Pagar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-  </div>
 </div>
 <script src="/public/js/jquery-1.11.0.min.js"></script>
 <script>
@@ -93,22 +99,23 @@
         itemsProductos.innerHTML = "";
         $.getJSON("/add-to-cart/" + productId).done(function (data) {
             console.log(`Producto añadido al carrito: ${JSON.stringify(data.cart)}`);
-             Object.values(data.cart).forEach(producto => {
-                        const item = document.createElement("div");
-                        item.className = "cart-item d-flex justify-content-between";
-                        item.innerHTML = `
+            Object.values(data.cart).forEach(producto => {
+                const item = document.createElement("div");
+                item.className = "cart-item d-flex justify-content-between";
+                item.setAttribute('data-id', producto.id)
+                item.innerHTML = `
                             <div class="d-flex">
-                                <img src="/public/images/productos/${ producto.img_url }" alt="${ producto.name }" class="product-img me-3">
+                                <img src="/public/images/productos/${producto.img_url}" alt="${producto.name}" class="product-img me-3">
                                 <div>
-                                    <h5>${ producto.marca }</h5>
-                                    <p class="text-muted">${ producto.name }</p>
+                                    <h5>${producto.marca}</h5>
+                                    <p class="text-muted">${producto.name}</p>
                                     <div class="input-group product-qty" style="max-width: 150px;">
                                         <span class="input-group-btn">
                                             <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
                                                 <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
                                             </button>
                                         </span>
-                                        <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="${ producto.quantity }" min="1" max="100">
+                                        <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="${producto.quantity}" min="1" max="100">
                                         <span class="input-group-btn">
                                             <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
                                                 <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
@@ -118,93 +125,59 @@
                                 </div>
                             </div>
                             <div class="d-flex flex-column justify-content-between">
-                                <span>${ producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) }</span>
-                                <a class="btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" href="/remove-from-cart/${ producto.id }"><i class="bi bi-bag-x-fill"></i></a>
+                                <span>${producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span>
+                                <a class="remove-item btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" data-id="${producto.id}"><i class="bi bi-bag-x-fill"></i></a>
                             </div>
                         `;
-                        itemsProductos.appendChild(item);
-                    });
+                itemsProductos.appendChild(item);
+            });
         })
     }
 </script>
-<!-- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    // Se obtiene el contenedor donde se renderizarán los productos del carrito
-    const itemsProductos = document.getElementById("itemsProductos");
-    if (!itemsProductos) {
-        console.error("Elemento con id 'itemsProductos' no encontrado.");
-        return;
-    }
-    // Se obtienen todos los botones de "Añadir al Carrito"
-    const addToCartButtons = document.querySelectorAll(".btn.btn-outline-dark.btn-small.border-0");
-    
-    // Se itera sobre cada botón para agregar el listener de click
-    addToCartButtons.forEach((btn) => {
-        btn.addEventListener("click", function () {
-            const productId = this.getAttribute("data-id");
-            if (!productId) {
-                console.error("El botón no tiene el atributo data-id.");
-                return;
-            }
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("itemsProductos").addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-item")) {
+                const productoId = event.target.getAttribute("data-id");
+                const cartItem = document.querySelector(`.cart-item[data-id="${productoId}"]`);
 
-            // Se realiza la petición GET para agregar el producto al carrito.
-            // Se usa $.getJSON para solicitar los detalles del producto agregado.
-            $.getJSON("/add-to-cart/" + productId)
-                .done(function (data) {
-                    // Obtener el valor del objeto data.cart y el valor de img_url
-                    // Ejemplo: mostrar en consola los productos y sus imágenes
-                    Object.values(data.cart).forEach(producto => {
-                        console.log("Producto:", producto);
-                        console.log("img_url:", producto.img_url);
-                    });
-                    
-                    // Se limpia el contenedor antes de renderizar el contenido actualizado del carrito.
-                    // itemsProductos.innerHTML = "";
-                    
-                    // Se verifica que se hayan recibido datos.
-                    if (Object.values(data.cart).length === 0) {
-                        itemsProductos.innerHTML = `<p class="text-center">Tu carrito está vacío.</p>`;
-                        return;
-                    }
-                    
-                    // Se itera sobre los productos recibidos. Se asume que `data` es un objeto
-                    // cuyos valores son los productos; si fuera un array, se podría usar directamente data.forEach.
-                    Object.values(data.cart).forEach(producto => {
-                        const item = document.createElement("div");
-                        item.className = "cart-item d-flex justify-content-between";
-                        item.innerHTML = `
-                            <div class="d-flex">
-                                <img src="/public/images/productos/${ producto.img_url }" alt="${ producto.name }" class="product-img me-3">
-                                <div>
-                                    <h5>${ producto.marca }</h5>
-                                    <p class="text-muted">${ producto.name }</p>
-                                    <div class="input-group product-qty" style="max-width: 150px;">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
-                                                <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                                            </button>
-                                        </span>
-                                        <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="${ producto.quantity }" min="1" max="100">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
-                                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-column justify-content-between">
-                                <span>${ producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) }</span>
-                                <a class="btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" href="/remove-from-cart/${ producto.id }"><i class="bi bi-bag-x-fill"></i></a>
-                            </div>
-                        `;
-                        itemsProductos.appendChild(item);
-                    });
+                if (!cartItem) {
+                    alert("Error: No se encontró el producto en la vista.");
+                    return;
+                }
+
+                fetch(`/remove-from-cart/${productoId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
                 })
-                .fail(function (jqxhr, textStatus, error) {
-                    console.error("Error en la solicitud AJAX:", textStatus, error);
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            // Aplicar efecto de fadeOut antes de eliminar el producto del DOM
+                            cartItem.style.transition = "opacity 0.4s ease-out";
+                            cartItem.style.opacity = "0";
+
+                            setTimeout(() => {
+                                cartItem.remove();
+
+                                // Actualizar la cantidad de productos en el carrito
+                                const cartCount = document.getElementById("cartCount");
+                                if (cartCount) {
+                                    cartCount.textContent = data.cart.length;
+                                }
+
+                                // Si el carrito está vacío, cerrar la offCanvas
+                                if (data.cart.length === 0) {
+                                    // document.getElementById("offcanvasCart").style.display = "none";
+                                    document.getElementById('offcanvasCart').hidden;
+                                }
+                            }, 400);
+                        } else {
+                            alert("Error al eliminar el producto");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
         });
     });
-});
-</script> -->
+</script>
