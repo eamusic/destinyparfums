@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
     database: 'destinyparfums'
 });
 
-// función globar shoppinCart
+// función global shoppinCart
 function cartHasProducts(req) {
     return Array.isArray(req.session.cart) && req.session.cart.length > 0;
 }
@@ -287,27 +287,6 @@ const addToCart = (req, res) => {
         }
     );
 };
-// Remover articulo del carrito
-// const removeFromCart = (req, res, next) => {
-//     const productoId = req.params.id;
-
-//     // Verificar si el carrito existe y enviar respuesta al body
-//     if (cartHasProducts(req)) {
-//         cart = req.session.cart;
-//         console.log('Carrito encontrado:', req.session.cart);
-//         // Buscar el índice del producto en el carrito
-//         const index = req.session.cart.findIndex(item => item.id === productoId);
-//         if (index > -1) {
-//             // Si se encuentra, eliminarlo del carrito
-//             req.session.cart.splice(index, 1);
-//             console.log('Producto eliminado del carrito:', productoId);
-//             return res.status(200).json({ message: 'Producto eliminado del carrito', cart: req.session.cart }).end();
-//         }
-//     } else {
-//         return res.status(404).json({ error: 'Producto no encontrado en el carrito' }).end();
-//     }
-//     res.redirect('/')
-// }
 
 // Remover artículo del carrito
 const removeFromCart = (req, res) => {

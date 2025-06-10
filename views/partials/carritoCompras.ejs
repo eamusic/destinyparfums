@@ -55,8 +55,8 @@
                                             <%= producto.price.toLocaleString('es-CO', { style: 'currency' ,
                                                 currency: 'COP' }) %>
                                         </span>
-                                        <a class="remove-item btn btn-sm btn-danger btn-pill" title="Quitar del Carrito"
-                                            data-id="<%= producto.id %>"><i class="bi bi-bag-x-fill"></i></a>
+                                        <button class="remove-item btn btn-sm btn-danger btn-pill" title="Quitar del Carrito"
+                                            data-id="<%= producto.id %>"><i class="bi bi-bag-x-fill"></i></button>
                                     </div>
                                 </div>
                                 <% }); %>
@@ -67,7 +67,7 @@
                 </div>
 
                 <!-- Cart Summary -->
-                <div class="col-auto ms-auto" id="subtotales">
+                <div class="col-auto ms-auto" id="subtotales" style="display: none;">
                     <div class="cart-summary d-flex">
                         <h4>Resumen de Compras</h4>
                         <ul class="list-unstyled">
@@ -126,7 +126,7 @@
                             </div>
                             <div class="d-flex flex-column justify-content-between">
                                 <span>${producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span>
-                                <a class="remove-item btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" data-id="${producto.id}"><i class="bi bi-bag-x-fill"></i></a>
+                                <button class="remove-item btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" data-id="${producto.id}"><i class="bi bi-bag-x-fill"></i></button>
                             </div>
                         `;
                 itemsProductos.appendChild(item);
