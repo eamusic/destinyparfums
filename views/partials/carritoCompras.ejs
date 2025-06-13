@@ -11,63 +11,13 @@
                 <!-- Shopping Cart Items -->
                 <div class="col-auto">
                     <!-- Cart Item -->
-                    <div id="itemsProductos">
-                        <% if (typeof cart !=="undefined" && Object.values(cart).length> 0) { %>
-                            <% Object.values(cart).forEach(function(producto) { %>
-                                <div class="cart-item d-flex justify-content-between" data-id="<%= producto.id %>">
-                                    <div class="d-flex">
-                                        <img src="/public/images/productos/<%= producto.img_url %>"
-                                            alt="<%= producto.name %>" class="product-img me-3">
-                                        <div>
-                                            <h5>
-                                                <%= producto.marca %>
-                                            </h5>
-                                            <p class="text-muted">
-                                                <%= producto.name %>
-                                            </p>
-                                            <div class="input-group product-qty" style="max-width: 150px;">
-                                                <span class="input-group-btn">
-                                                    <button type="button"
-                                                        class="quantity-left-minus btn btn-light btn-number"
-                                                        data-type="minus" data-field="">
-                                                        <svg width="16" height="16">
-                                                            <use xlink:href="#minus"></use>
-                                                        </svg>
-                                                    </button>
-                                                </span>
-                                                <input type="text" id="quantity" name="quantity"
-                                                    class="form-control quantity input-number text-center"
-                                                    value="<%= producto.quantity %>" min="1" max="100">
-                                                <span class="input-group-btn">
-                                                    <button type="button"
-                                                        class="quantity-right-plus btn btn-light btn-number"
-                                                        data-type="plus" data-field="">
-                                                        <svg width="16" height="16">
-                                                            <use xlink:href="#plus"></use>
-                                                        </svg>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-column justify-content-between">
-                                        <span>
-                                            <%= producto.price.toLocaleString('es-CO', { style: 'currency' ,
-                                                currency: 'COP' }) %>
-                                        </span>
-                                        <button class="remove-item btn btn-sm btn-danger btn-pill" title="Quitar del Carrito"
-                                            data-id="<%= producto.id %>"><i class="bi bi-bag-x-fill"></i></button>
-                                    </div>
-                                </div>
-                                <% }); %>
-                                    <% } else { %>
-                                        <p class="text-center">Tu carrito está vacío.</p>
-                                        <% } %>
-                    </div>
+                    <div id="itemsProductos"></div>
                 </div>
-
                 <!-- Cart Summary -->
-                <div class="col-auto ms-auto" id="subtotales" style="display: none;">
+                <div class="col-auto ms-auto">
+                    <div id="summary"></div>
+                 </div>
+                <div class="col-auto ms-auto"  style="display: none;">
                     <div class="cart-summary d-flex">
                         <h4>Resumen de Compras</h4>
                         <ul class="list-unstyled">
@@ -93,6 +43,184 @@
 </div>
 <script src="/public/js/jquery-1.11.0.min.js"></script>
 <script>
+  // Función para cargar el carrito al iniciar
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch(`/cart-has-products/`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) throw new Error("Error al obtener los datos del carrito");
+        
+        const data = await response.json();
+        updateCartItems(document.getElementById("itemsProductos"), data.cart);
+        updateCartSummary(document.getElementById("summary"), data.resumen);
+    } catch (error) {
+        console.error("Error al cargar el carrito:", error);
+    }
+});
+
+// Función para agregar productos al carrito
+async function addCart(productId) {
+    try {
+        const response = await fetch(`/add-to-cart/${productId}`);
+        if (!response.ok) throw new Error("Error al agregar producto");
+
+        const data = await response.json();
+        updateCartItems(document.getElementById("itemsProductos"), data.cart);
+        updateCartSummary(document.getElementById("summary"), data.resumen);
+    } catch (error) {
+        console.error("Error al añadir producto:", error);
+    }
+}
+
+// Manejo de eventos unificado
+document.addEventListener("DOMContentLoaded", () => {
+    const cartContainer = document.getElementById("itemsProductos");
+
+    cartContainer.addEventListener("click", async (event) => {
+        const target = event.target;
+        
+        // Eliminar producto
+        if (target.classList.contains("remove-item")) {
+            const productId = target.getAttribute("data-id");
+            try {
+                const response = await fetch(`/remove-from-cart/${productId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                if (!response.ok) throw new Error("Error al eliminar producto");
+
+                const data = await response.json();
+                target.closest(".cart-item").remove();
+                updateCartSummary(document.getElementById("summary"), data.resumen);
+            } catch (error) {
+                console.error("Error al eliminar producto:", error);
+            }
+        }
+        
+        // Modificar cantidad
+        if (target.classList.contains("btn-number")) {
+            console.log(`Botón presionado: ${target.getAttribute("data-type")}`);
+        }
+    });
+});
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const response = await fetch(`/cart-has-products/`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await response.json();
+
+    const itemsProductos = document.getElementById("itemsProductos");
+    const summary = document.getElementById("summary");
+
+    // Actualizar el listado de productos en el carrito
+    updateCartItems(itemsProductos, data.cart);
+
+    // Actualizar el resumen de compras
+    updateCartSummary(summary, data.resumen);
+  } catch (error) {
+    alert("Error al cargar el carrito: " + error);
+  }
+});
+
+/**
+ * Actualiza el contenedor de items del carrito.
+ * @param {HTMLElement} container - Elemento donde se listan los productos.
+ * @param {Object} cartData - Datos del carrito, o null si está vacío.
+ */
+function updateCartItems(container, cartData) {
+  // Vaciar contenedor
+  container.innerHTML = "";
+
+  if (cartData && Object.keys(cartData).length) {
+    Object.values(cartData).forEach((producto) => {
+      const item = document.createElement("div");
+      item.className = "cart-item d-flex justify-content-between";
+      item.setAttribute("data-id", producto.id);
+
+      item.innerHTML = `
+        <div class="d-flex">
+          <img src="/public/images/productos/${producto.img_url}" alt="${producto.name}" class="product-img me-3">
+          <div>
+            <h5>${producto.marca}</h5>
+            <p class="text-muted">${producto.name}</p>
+            <div class="input-group product-qty" style="max-width: 150px;">
+              <span class="input-group-btn">
+                <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
+                  <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                </button>
+              </span>
+              <input type="text" class="form-control quantity input-number text-center" value="${producto.quantity}" min="1" max="100">
+              <span class="input-group-btn">
+                <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+                  <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column justify-content-between">
+          <span>${producto.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</span>
+          <button class="remove-item btn btn-sm btn-danger btn-pill" title="Quitar del Carrito" data-id="${producto.id}">
+            <i class="bi bi-bag-x-fill"></i>
+          </button>
+        </div>`;
+      container.appendChild(item);
+    });
+  } else {
+    container.innerHTML = "<p>Carrito de Compras Vacío</p>";
+  }
+}
+
+/**
+ * Actualiza el contenedor del resumen de compras.
+ * @param {HTMLElement} container - Elemento para desplegar el resumen.
+ * @param {Object} resumenData - Datos de resumen, o null si no hay.
+ */
+function updateCartSummary(container, resumenData) {
+  // Vaciar contenedor
+  container.innerHTML = "";
+
+  if (resumenData && Object.keys(resumenData).length) {
+    Object.values(resumenData).forEach((itempdcto) => {
+      const summaryItem = document.createElement("div");
+      summaryItem.classList.add("cart-summary", "d-flex");
+      summaryItem.innerHTML = `
+        <h4>Subtotal Carrito</h4>
+        <ul class="list-unstyled">
+          <li class="d-flex justify-content-between">
+            <span>Cantidad Pdctos:</span>
+            <span>${itempdcto.cantidad}</span>
+          </li>
+          <li class="d-flex justify-content-between">
+            <span>Envío:</span>
+            <span>$0.00</span>
+          </li>
+          <li class="d-flex justify-content-between">
+            <span class="total-price">Total:</span>
+            <span class="total-price">${itempdcto.subtotal}</span>
+          </li>
+        </ul>
+        <button class="btn btn-small btn-checkout w-100">Ir a Pagar</button>
+      `;
+      container.appendChild(summaryItem);
+    });
+  } else {
+    // container.innerHTML = "<p>Sin resumen de compras</p>";
+    console.log("Resumen:", JSON.stringify(resumenData));
+  }
+}
+
+</script>
+<script>
     async function addCart(id) {
         const productId = id;
         const itemsProductos = document.getElementById('itemsProductos');
@@ -115,7 +243,7 @@
                                                 <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
                                             </button>
                                         </span>
-                                        <input type="text" id="quantity" name="quantity" class="form-control quantity input-number text-center" value="${producto.quantity}" min="1" max="100">
+                                        <input type="text"   class="form-control quantity input-number text-center" value="${producto.quantity}" min="1" max="100">
                                         <span class="input-group-btn">
                                             <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
                                                 <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
@@ -130,13 +258,20 @@
                             </div>
                         `;
                 itemsProductos.appendChild(item);
+                // itemsProductos.innerHTML = item;
             });
+        })
+        $.getJSON("/cart-has-products").done( async function (data) {
+            if (data.resumen) {
+                return resumenData = data.resumen;
+            }            
         })
     }
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("itemsProductos").addEventListener("click", function (event) {
+             const itemsProductos = document.getElementById("itemsProductos");
             if (event.target.classList.contains("remove-item")) {
                 const productoId = event.target.getAttribute("data-id");
                 const cartItem = document.querySelector(`.cart-item[data-id="${productoId}"]`);
@@ -165,11 +300,8 @@
                                 if (cartCount) {
                                     cartCount.textContent = data.cart.length;
                                 }
-
-                                // Si el carrito está vacío, cerrar la offCanvas
                                 if (data.cart.length === 0) {
-                                    // document.getElementById("offcanvasCart").style.display = "none";
-                                    document.getElementById('offcanvasCart').hidden;
+                                    itemsProductos.innerHTML = "<p>Carrito Vacío</p>";
                                 }
                             }, 400);
                         } else {
@@ -178,6 +310,17 @@
                     })
                     .catch(error => console.error("Error:", error));
             }
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("itemsProductos").addEventListener("click", function (event) {
+            if (event.target.classList.contains("btn-number")) {
+                const btnQty = event.target.getAttribute("data-type");
+                console.log(`Botón ${btnQty}`);
+            } 
+            
         });
     });
 </script>

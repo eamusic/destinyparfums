@@ -110,7 +110,7 @@
 
       var $el_product = $(this);
       var quantity = 0;
-
+      
       $el_product.find('.quantity-right-plus').click(function (e) {
         e.preventDefault();
         var quantity = parseInt($el_product.find('.quantity').val());
