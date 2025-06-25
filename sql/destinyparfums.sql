@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2025 a las 07:18:42
+-- Tiempo de generación: 25-06-2025 a las 05:46:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -94,31 +94,31 @@ CREATE TABLE `marcas` (
 --
 
 INSERT INTO `marcas` (`id`, `nombre`, `logo_marca`) VALUES
-(1, 'AFNAN', ''),
+(1, 'AFNAN', 'afnan.jpg'),
 (2, 'AHLI', 'ahli.jpeg'),
 (3, 'AL HARAMAIN', 'alHaramain.png'),
-(4, 'ALEXANDRE J', ''),
-(5, 'AMOUAGE', ''),
-(6, 'ANTONIO BANDERAS', ''),
+(4, 'ALEXANDRE J', 'alexandre.jpg'),
+(5, 'AMOUAGE', 'amouage.jpg'),
+(6, 'ANTONIO BANDERAS', 'antoniobanderas.jpg'),
 (7, 'ARIANA GRANDE', 'arianaGrande.jpeg'),
-(8, 'ARMAF', ''),
+(8, 'ARMAF', 'armaf.jpg'),
 (9, 'BHARARA', 'bharara.jpeg'),
-(10, 'BLACKOUD', ''),
-(11, 'BOND', ''),
-(12, 'BURBERRY', ''),
+(10, 'BLACKOUD', 'blackoud.jpg'),
+(11, 'BOND', 'bond.jpg'),
+(12, 'BURBERRY', 'burberry.jpg'),
 (13, 'BVLGARI', 'bvlgary.jpeg'),
 (14, 'CALVIN KLEIN', 'calvinKlein.jpeg'),
-(15, 'CAPONES', ''),
+(15, 'CAPONES', 'capones.jpg'),
 (16, 'CAROLINA HERRERA', 'carolinaHerrera.jpeg'),
-(17, 'CARTIER', ''),
-(18, 'CHANEL', ''),
-(19, 'CREED', ''),
-(20, 'DEVIER', ''),
-(21, 'DIESEL', ''),
-(22, 'DIOR', ''),
-(23, 'DOLCE & GABBANA', ''),
-(24, 'DSQUARED2', ''),
-(25, 'FERRAGAMO', ''),
+(17, 'CARTIER', 'cartier.jpg'),
+(18, 'CHANEL', 'channel.jpg'),
+(19, 'CREED', 'creed.jpg'),
+(20, 'DEVIER', 'devier.jpg'),
+(21, 'DIESEL', 'diesel.jpg'),
+(22, 'DIOR', 'dior.jpg'),
+(23, 'DOLCE & GABBANA', 'dolcegabbana.jpg'),
+(24, 'DSQUARED2', 'dsquared.jpg'),
+(25, 'FERRAGAMO', 'ferragamo.jpg'),
 (26, 'FUGAZZI', ''),
 (27, 'GEVILL FRANCE', ''),
 (28, 'GIORGIO ARMANI', ''),
